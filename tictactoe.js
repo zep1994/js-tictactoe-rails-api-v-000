@@ -1,11 +1,7 @@
-// rubys suggestions
-// check the middle box to see if we have to check others and exit early if we dont to save processing time
 turn = 1;
-var isEven = function(number) {
-	return(number % 2 == 0) ? true : false
-};
-var yourLetter = function() {
-	if(isEven(turn)) {
+
+var player = function() {
+	if(turn % 2 == 0) {
 		return "X";
 	}
 	else {
@@ -13,7 +9,7 @@ var yourLetter = function() {
 	}
 };
 var cellMatch = function(element) {
-	if(element.html() != yourLetter()) {
+	if(element.html() != player()) {
 		return false;
 	}
 	else {
@@ -54,7 +50,7 @@ var checkDiagonalA = function() {
 		var selectorX = 'td[data-x="' + i + '"]'
 		var selectorY = 'td[data-y="' + i + '"]'
 		cell = $(selectorX + selectorY)
-		if(cell.html() != yourLetter()) {
+		if(cell.html() != player()) {
 			return false;
 		}
 	}
@@ -67,7 +63,7 @@ var checkDiagonalB = function() {
 		var selectorY = 'td[data-y="' + y + '"]'
 		cell = $(selectorX + selectorY)
 		x = x - 1;
-		if(cell.html() != yourLetter()) {
+		if(cell.html() != player()) {
 			return false;
 		}
 	}
@@ -95,13 +91,7 @@ $("tr").each(function(i, row) {
 $("td").each(function(i, row){
 	$(row).click(function(){
 		turn += 1;
-		if(isEven(turn)) {
-			letter = "X";
-		}
-		else {
-			letter = "O";
-		}
-		$(row).html(letter);
+		$(row).html(player());
 		if(won()) {
 			alert("you won!");
 		}
