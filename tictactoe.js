@@ -1,4 +1,24 @@
-turn = 1;
+var turn = 1;
+var winningCombos = [[[0,0],[1,0],[2,0]], [[0,1],[1,1],[2,1]], [[0,2][1,2],[2,2]], [[0,0],[1,1],[2,2]], [[0,0],[0,1],[0,2]], [[2,0],[2,1],[2,2]], [[1,0],[1,1],[1,2]], [[2,0],[1,1],[0,2]]]
+var checkCells = function(ary) {
+  for(var i = 0; i < ary.length; i++) {
+  	var x = ary[0];
+  	var y = ary[1];
+    var selector = $('[data-x="' + x + '"][data-y="' + y + '"]')
+    if( cellMatch(selector)) {
+      return false;
+    }
+  }
+  return true;
+}
+var checkWinner = function() {
+  for(var i = 0; i < winningCombos.length; i++) {
+    if(checkCells(winningCombos[i]) == true) {
+      return true;
+    }
+  }
+  return false;
+}
 
 var player = function() {
 	if(turn % 2 == 0) {
@@ -78,16 +98,6 @@ var won = function() {
 	}
 	return false;
 };
-$("tr").each(function(i, row) {
-	i = i + 1;
-	$(row).attr('data-x', i);
-	$(row).children().each(function(i, cell){
-		i = i + 1;
-		x = $(cell).parent().attr("data-x")
-		$(cell).attr("data-x", x);
-		$(cell).attr("data-y", i)
-	});
-});
 $("td").each(function(i, row){
 	$(row).click(function(){
 		turn += 1;
