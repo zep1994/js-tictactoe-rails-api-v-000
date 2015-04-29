@@ -33,12 +33,10 @@ var noCellMatch = function(element) {
 	return (element.html() != player())
 }
 
-$("td").each(function(i, row){
-	$(row).click(function(){
-		turn += 1;
-		$(row).html(player());
-		if(checkWinner()) {
-			alert("you won!");
-		}
-	});
+$("tbody").click(function(event){
+	turn += 1;
+	$(event.target).html(player());
+	if(checkWinner()) {
+		alert("you won!");
+	}
 });
