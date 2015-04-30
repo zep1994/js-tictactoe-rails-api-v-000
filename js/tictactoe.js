@@ -1,4 +1,4 @@
-var turn = 1;
+var turn = 0;
 var winningCombos = [[[0,0],[1,0],[2,0]], [[0,1],[1,1],[2,1]], [[0,2],[1,2],[2,2]], [[0,0],[1,1],[2,2]], [[0,0],[0,1],[0,2]], [[2,0],[2,1],[2,2]], [[1,0],[1,1],[1,2]], [[2,0],[1,1],[0,2]]]
 var checkCells = function(ary) {
   for(var i = 0; i < ary.length; i++) {
@@ -33,10 +33,21 @@ var noCellMatch = function(element) {
 	return (element.html() != player())
 }
 var doTurn = function(event){
-  turn += 1;
-  $(event.target).html(player());
+  updateState(event);
   if(checkWinner()) {
-    alert("you won!");
+    message("Player " + player() + " Won!")
   }
+  turn += 1;
 }
-$("tbody").click(doTurn);
+var message = function(message) {
+  alert(message);
+}
+var updateState = function(event) {
+  $(event.target).html(player());
+}
+var attachListeners = function() {
+  $("tbody").click(function(event) {
+    doTurn(event)
+  })
+}
+
