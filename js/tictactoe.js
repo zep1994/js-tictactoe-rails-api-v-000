@@ -32,11 +32,11 @@ var player = function() {
 var noCellMatch = function(element) {
 	return (element.html() != player())
 }
-
-$("tbody").click(function(event){
-	turn += 1;
-	$(event.target).html(player());
-	if(checkWinner()) {
-		alert("you won!");
-	}
-});
+var doTurn = function(event){
+  turn += 1;
+  $(event.target).html(player());
+  if(checkWinner()) {
+    alert("you won!");
+  }
+}
+$("tbody").click(doTurn);
