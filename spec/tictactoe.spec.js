@@ -1,4 +1,5 @@
 'use strict';
+
 describe('javascript', function() {
   beforeEach(function(){
     turn = 0;
@@ -83,46 +84,46 @@ describe('javascript', function() {
     });     
 
     it("should tell me if there is a winning combo on the board for the current player (vertical)", function() {
-      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>')
-      attachListeners()
+      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>');
+      attachListeners();
       spyOn(window, "message");
       // x goes
-      var selector = '[data-x="0"][data-y="0"]'
-      $(selector).click()
+      var selector = '[data-x="0"][data-y="0"]';
+      $(selector).click();
       // y goes
-      var selector = '[data-x="1"][data-y="0"]'
-      $(selector).click()
+      var selector = '[data-x="1"][data-y="0"]';
+      $(selector).click();
       // x goes
-      var selector = '[data-x="0"][data-y="1"]'
-      $(selector).click()
+      var selector = '[data-x="0"][data-y="1"]';
+      $(selector).click();
       // y goes
-      var selector = '[data-x="2"][data-y="0"]'
-      $(selector).click()
+      var selector = '[data-x="2"][data-y="0"]';
+      $(selector).click();
       // x goes
-      var selector = '[data-x="0"][data-y="2"]'
-      $(selector).click()
-      expect(window.message).toHaveBeenCalledWith("Player X Won!")
+      var selector = '[data-x="0"][data-y="2"]';
+      $(selector).click();
+      expect(window.message).toHaveBeenCalledWith("Player X Won!");
     });     
 
     it("should tell me if there is a winning combo on the board for the current player (diagonal)", function() {
-      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>')
+      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>');
       attachListeners()
       spyOn(window, "message");
       // x goes
-      var selector = '[data-x="0"][data-y="0"]'
-      $(selector).click()
+      var selector = '[data-x="0"][data-y="0"]';
+      $(selector).click();
       // y goes
-      var selector = '[data-x="1"][data-y="0"]'
-      $(selector).click()
+      var selector = '[data-x="1"][data-y="0"]';
+      $(selector).click();
       // x goes
-      var selector = '[data-x="1"][data-y="1"]'
-      $(selector).click()
+      var selector = '[data-x="1"][data-y="1"]';
+      $(selector).click();
       // y goes
-      var selector = '[data-x="2"][data-y="0"]'
-      $(selector).click()
+      var selector = '[data-x="2"][data-y="0"]';
+      $(selector).click();
       // x goes
-      var selector = '[data-x="2"][data-y="2"]'
-      $(selector).click()
+      var selector = '[data-x="2"][data-y="2"]';
+      $(selector).click();
       expect(window.message).toHaveBeenCalledWith("Player X Won!")    });     
   });
 
