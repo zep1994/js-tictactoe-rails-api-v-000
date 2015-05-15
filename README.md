@@ -1,5 +1,12 @@
 # jQuery Tic-Tac-Toe
 
+## Contents
+
+* About
+* HTML
+* JavaScript
+* Running your server
+
 ## About
 
 You must have a function called `attachlisteners()` which I call in the tests to attach the click handlers to the page after I've mocked up the DOM.
@@ -13,6 +20,32 @@ var attachListeners = function() {
   })
 }
 ```
+
+## HTML
+
+The `index.html` page, when served, looks like this:
+
+![tic-tac-toe board](https://s3-us-west-2.amazonaws.com/web-dev-readme-photos/js/jquery-tic-tac-toe-board)
+
+The grid is made by a table. Each square is in a table row, or `tr` and each square is a table data, or `td` (you could also call this a cell). 
+
+## JavaScript
+
+* `attachListeners()`
+  * When a client clicks on a cell, the function `doTurn()` should be called and passed a parameter of the event
+* `doTurn()`
+  * Increment the variable `turn` by one
+  * Should call on the function `updateState()` and pass it the event
+  * Should call on `checkForWinners()`
+* `player()`
+  * If the turn number is even, this function should return the string "X", else it should return the string "O"
+* `updateState()`
+  * This method should call on `player()` and add the return value of this function to the clicked cell on the table
+* `checkWinner()`
+  * This function should evaluate the board to see if anyone has won
+  * If there is a winner, this function should call on `message()`
+* `message()`
+  * This should return the string "Player X Won!" if turn is even, "Player O Won!" if odd
 
 ## Running Your Server
 
