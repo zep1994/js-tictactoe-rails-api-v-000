@@ -2,7 +2,7 @@
 describe('javascript', function() {
   beforeEach(function(){
     turn = 0;
-  })
+  });
 
   describe( "#attachListeners", function() {
     it("should attach event listeners which call your turn function when someone clicks on a square", function() {
@@ -16,11 +16,15 @@ describe('javascript', function() {
   });
 
   describe( "#doTurn", function() {
-    // it("should create an array of 9 empty values", function() {
+    var myEvent;
+    beforeEach(function(){
+      myEvent = $('[data-x="0"][data-y="0"]').click();
+    });
+
     it("should increment turn and call on `checkWinner()`, `updateState()`", function() {
       spyOn(window, "checkWinner");
       spyOn(window, "updateState");
-      doTurn();
+      doTurn(myEvent);
       expect(turn).toEqual(1);
       expect(window.updateState).toHaveBeenCalled;
       expect(window.checkWinner).toHaveBeenCalled;
@@ -44,7 +48,8 @@ describe('javascript', function() {
       var selector = '[data-x="0"][data-y="0"]';
       $(selector).click();
       expect($(selector).html()).toEqual("X");
-    });  
+    }); 
+
     it("calls on `player()`", function() {
       setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>');
       attachListeners();
@@ -52,6 +57,16 @@ describe('javascript', function() {
       var selector = '[data-x="1"][data-y="0"]';
       $(selector).click();
       expect(window.player).toHaveBeenCalled;
+    });     
+  });
+
+  describe( "#message", function() {
+    it("adds the string it's passed to the div with an id of message", function() {
+      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table><div id="message"></div></body>');
+      attachListeners();
+      var string = "Player X Won!";
+      message(string);
+      expect($("#message").html()).toEqual(string);
     });     
   });
 
@@ -66,9 +81,7 @@ describe('javascript', function() {
       $(selector).click()
       expect(checkWinner()).toEqual(false)   
     });     
-  });
 
-  describe( "#checkWinner", function() {
     it("should tell me if there is a winning combo on the board for the current player (vertical)", function() {
       setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>')
       attachListeners()
@@ -90,9 +103,7 @@ describe('javascript', function() {
       $(selector).click()
       expect(window.message).toHaveBeenCalledWith("Player X Won!")
     });     
-  });
 
-  describe( "#checkWinner", function() {
     it("should tell me if there is a winning combo on the board for the current player (diagonal)", function() {
       setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>')
       attachListeners()

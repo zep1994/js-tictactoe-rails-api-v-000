@@ -43,9 +43,9 @@ The grid is made by a table. Each square is in a table row, or `tr` and each squ
   * This method should call on `player()` and add the return value of this function to the clicked cell on the table
 * `checkWinner()`
   * This function should evaluate the board to see if anyone has won
-  * If there is a winner, this function should call on `message()`
+  * If there is a winner, this function should make one of two strings: "Player X Won!" or "Player O Won!". It should then pass this string to `message()`.
 * `message()`
-  * This should return the string "Player X Won!" if turn is even, "Player O Won!" if odd
+  * This function should accept a string and add the string to the `div` with an id of "message" 
 
 ## Running Your Server
 
