@@ -28,19 +28,19 @@ The grid is made by a table. Each square is in a table row, or `tr` and each squ
 Each `td` has two data attributes: x and y coordinates. The top left `td` had an x of 0 and a y of 0.
 
 ```html
-<td data-x="0", data-y="0"></td>
+<td data-x="0" data-y="0"></td>
 ```
 
 The middle `td` has an x of 1 and a y of 1.
 
 ```html
-<td data-x="1", data-y="1"></td>
+<td data-x="1" data-y="1"></td>
 ```
 
 The lower right corner has an x of 2 and a y of 2.
 
 ```html
-<td data-x="2", data-y="2"></td>
+<td data-x="2" data-y="2"></td>
 ```
 
 To figure out how jQuery can "see" these values, take a look at the Hints section.
@@ -49,7 +49,6 @@ To figure out how jQuery can "see" these values, take a look at the Hints sectio
 
 * `attachListeners()`
   * You must have a function called `attachlisteners()` which the tests call to attach the click handlers to the page after the DOM has been loaded
-
   * When a client clicks on a cell, the function `doTurn()` should be called and passed a parameter of the event
 * `doTurn()`
   * Increment the variable `turn` by one
