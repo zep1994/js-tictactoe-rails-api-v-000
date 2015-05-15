@@ -2,10 +2,18 @@
 
 ## Contents
 
+* Objective
 * HTML
 * JavaScript
 * Running your server
 * Hints
+* Resources
+
+## Objective
+
+Make a tic-tac-toe game that behaves like the following video (right click and select `Save Link As..`)
+
+![tic-tac-toe video](https://s3-us-west-2.amazonaws.com/web-dev-readme-photos/js/tic-tac-toe.mov)
 
 ## HTML
 
