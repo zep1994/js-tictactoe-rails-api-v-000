@@ -23,6 +23,8 @@ describe('javascript', function() {
     });
 
     it("should increment turn and call on `checkWinner()`, `updateState()`", function() {
+      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table><div id="message"></div><button id="lastGame">Show Me Last Games Results!</button><div id="lastGameBox"></div></body>');
+      attachListeners();
       spyOn(window, "checkWinner");
       spyOn(window, "updateState");
       doTurn(myEvent);
@@ -114,7 +116,7 @@ describe('javascript', function() {
     });
   });
 
-  describe("#tie", function() {
+  describe("when there is a tie", function() {
     it("calls on 'message' and passes it the string 'Tie game' when there is a tie", function() {
       setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table><div id="message"></div><button id="lastGame">Show Me Last Games Results!</button><div id="lastGameBox"></div></body>');
       attachListeners();
@@ -132,6 +134,98 @@ describe('javascript', function() {
       // _O_|_O_|_X_
       //  X | X | O
       expect(window.message).toHaveBeenCalledWith("Tie game");
+    });
+  });
+
+  describe("resetting the board", function() {
+
+    it("resets the board and sets turn to zero when there is a winner", function() {
+      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table><div id="message"></div><button id="lastGame">Show Me Last Games Results!</button><div id="lastGameBox"></div></body>');
+      attachListeners();
+      $('[data-x="1"][data-y="2"]').click();
+      $('[data-x="0"][data-y="0"]').click();
+      $('[data-x="1"][data-y="0"]').click();
+      $('[data-x="1"][data-y="1"]').click();
+      $('[data-x="2"][data-y="0"]').click();
+      $('[data-x="2"][data-y="2"]').click();
+      // _O_|_X_|_X_
+      // ___|_O_|___
+      //    | X | O 
+      expect($("#message").html()).toEqual("Player O Won!");
+      // ___|___|___
+      // ___|___|___
+      //    |   |   
+      expect(turn).toEqual(0);
+      $("td").each(function() {
+        expect($(this).html()).toEqual("")
+      }); 
+    });
+
+    it("resets the board and sets turn to zero when there is a tie", function() {
+      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table><div id="message"></div><button id="lastGame">Show Me Last Games Results!</button><div id="lastGameBox"></div></body>');
+      attachListeners();
+      $('[data-x="0"][data-y="0"]').click();
+      $('[data-x="1"][data-y="1"]').click();
+      $('[data-x="1"][data-y="2"]').click();
+      $('[data-x="0"][data-y="1"]').click();
+      $('[data-x="2"][data-y="1"]').click();
+      $('[data-x="2"][data-y="2"]').click();
+      $('[data-x="0"][data-y="2"]').click();
+      $('[data-x="1"][data-y="0"]').click();
+      $('[data-x="2"][data-y="0"]').click();
+      // _X_|_O_|_X_
+      // _O_|_O_|_X_
+      //  X | X | O 
+      expect($("#message").html()).toEqual("Tie game");
+      // ___|___|___
+      // ___|___|___
+      //    |   |   
+      expect(turn).toEqual(0);
+      $("td").each(function() {
+        expect($(this).html()).toEqual("")
+      });  
+    });
+
+    it("allows client to play multiple game", function() {
+      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table><div id="message"></div><button id="lastGame">Show Me Last Games Results!</button><div id="lastGameBox"></div></body>');
+      attachListeners();
+      $('[data-x="0"][data-y="0"]').click();
+      $('[data-x="1"][data-y="1"]').click();
+      $('[data-x="1"][data-y="2"]').click();
+      $('[data-x="0"][data-y="1"]').click();
+      $('[data-x="2"][data-y="1"]').click();
+      $('[data-x="2"][data-y="2"]').click();
+      $('[data-x="0"][data-y="2"]').click();
+      $('[data-x="1"][data-y="0"]').click();
+      $('[data-x="2"][data-y="0"]').click();
+      // _X_|_O_|_X_
+      // _O_|_O_|_X_
+      //  X | X | O 
+      expect($("#message").html()).toEqual("Tie game");
+      // ___|___|___
+      // ___|___|___
+      //    |   |   
+      expect(turn).toEqual(0);
+      $("td").each(function() {
+        expect($(this).html()).toEqual("")
+      });
+      $('[data-x="1"][data-y="2"]').click();
+      $('[data-x="0"][data-y="0"]').click();
+      $('[data-x="1"][data-y="0"]').click();
+      $('[data-x="1"][data-y="1"]').click();
+      $('[data-x="2"][data-y="0"]').click();
+      $('[data-x="2"][data-y="2"]').click();
+      // _O_|_X_|_X_
+      // ___|_O_|___
+      //    | X | O 
+      expect($("#message").html()).toEqual("Player O Won!");
+      // ___|___|___
+      // ___|___|___
+      //    |   |   
+      expect(turn).toEqual(0);
+      $("td").each(function() {
+        expect($(this).html()).toEqual("")
+      });
     });
   });
 });
