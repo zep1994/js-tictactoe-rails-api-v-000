@@ -72,7 +72,7 @@ describe('javascript', function() {
   });
 
   describe( "#checkWinner", function() {
-    it("should tell me if there is a winning combo on the board for the current player", function() {
+    it("returns false if there is no winning combo on the board", function() {
       setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>');
       attachListeners()
       spyOn(window, "updateState");
@@ -83,48 +83,54 @@ describe('javascript', function() {
       expect(checkWinner()).toEqual(false)   
     });     
 
-    it("should tell me if there is a winning combo on the board for the current player (vertical)", function() {
+    it("calls on 'message' and passes it the string 'Player X Won!' when player X wins vertically", function() {
       setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>');
       attachListeners();
       spyOn(window, "message");
-      // x goes
-      var selector = '[data-x="0"][data-y="0"]';
-      $(selector).click();
-      // y goes
-      var selector = '[data-x="1"][data-y="0"]';
-      $(selector).click();
-      // x goes
-      var selector = '[data-x="0"][data-y="1"]';
-      $(selector).click();
-      // y goes
-      var selector = '[data-x="2"][data-y="0"]';
-      $(selector).click();
-      // x goes
-      var selector = '[data-x="0"][data-y="2"]';
-      $(selector).click();
+      $('[data-x="0"][data-y="0"]').click();
+      $('[data-x="1"][data-y="0"]').click();
+      $('[data-x="0"][data-y="1"]').click();
+      $('[data-x="2"][data-y="0"]').click();
+      $('[data-x="0"][data-y="2"]').click();
+      // _X_|_O_|_O_
+      // _X_|___|___
+      //  X |   |   
       expect(window.message).toHaveBeenCalledWith("Player X Won!");
-    });     
+    });
 
-    it("should tell me if there is a winning combo on the board for the current player (diagonal)", function() {
+    it("calls on 'message' and passes it the string 'Player X Won!' when player X wins diagonally", function() {
       setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>');
       attachListeners()
       spyOn(window, "message");
-      // x goes
-      var selector = '[data-x="0"][data-y="0"]';
-      $(selector).click();
-      // y goes
-      var selector = '[data-x="1"][data-y="0"]';
-      $(selector).click();
-      // x goes
-      var selector = '[data-x="1"][data-y="1"]';
-      $(selector).click();
-      // y goes
-      var selector = '[data-x="2"][data-y="0"]';
-      $(selector).click();
-      // x goes
-      var selector = '[data-x="2"][data-y="2"]';
-      $(selector).click();
-      expect(window.message).toHaveBeenCalledWith("Player X Won!")    });     
+      $('[data-x="0"][data-y="0"]').click();
+      $('[data-x="1"][data-y="0"]').click();
+      $('[data-x="1"][data-y="1"]').click();
+      $('[data-x="2"][data-y="0"]').click();
+      $('[data-x="2"][data-y="2"]').click();
+      // _X_|_O_|_O_
+      // ___|_X_|___
+      //    |   | X 
+      expect(window.message).toHaveBeenCalledWith("Player X Won!"); 
+    });
   });
 
+  describe("#tie", function() {
+    it("calls on 'message' and passes it the string 'Tie game' when there is a tie", function() {
+      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table><div id="message"></div><button id="lastGame">Show Me Last Games Results!</button><div id="lastGameBox"></div></body>');
+      attachListeners();
+      $('[data-x="0"][data-y="0"]').click();
+      $('[data-x="1"][data-y="1"]').click();
+      $('[data-x="1"][data-y="2"]').click();
+      $('[data-x="0"][data-y="1"]').click();
+      $('[data-x="2"][data-y="1"]').click();
+      $('[data-x="2"][data-y="2"]').click();
+      $('[data-x="0"][data-y="2"]').click();
+      $('[data-x="1"][data-y="0"]').click();
+      $('[data-x="2"][data-y="0"]').click();
+      // _X_|_O_|_X_
+      // _O_|_O_|_X_
+      //  X | X | O
+      expect($("#message").html()).toEqual("Tie game");
+    });
+  });
 });
