@@ -18,6 +18,7 @@ var checkWinner = function() {
       return true;
     }
   }
+  message("Player " + player() + " Won!");
   return false;
 }
 
@@ -28,16 +29,30 @@ var player = function() {
   else {
     return "O";
   }
-};
+}
+var tie = function() {
+  var thereIsATie = true;
+  $("td").each(function() {
+    if ($(this).html().length <= 0) {
+      thereIsATie = false;
+    }
+  });
+  if (thereIsATie) message("Tie game");
+  return thereIsATie;
+}
 var noCellMatch = function(element) {
   return (element.html() != player())
 }
 var doTurn = function(event){
   updateState(event);
-  if(checkWinner()) {
-    message("Player " + player() + " Won!")
+  if(checkWinner() || tie() ) {
+    resetGame();
   }
   turn += 1;
+}
+var resetGame = function() {
+  $("td").html("");
+  var turn = 0;
 }
 var message = function(message) {
   $("#message").html(message);
