@@ -100,7 +100,7 @@ describe('javascript', function() {
 
     it("calls on 'message' and passes it the string 'Player X Won!' when player X wins diagonally", function() {
       setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>');
-      attachListeners()
+      attachListeners();
       spyOn(window, "message");
       $('[data-x="0"][data-y="0"]').click();
       $('[data-x="1"][data-y="0"]').click();
@@ -118,6 +118,7 @@ describe('javascript', function() {
     it("calls on 'message' and passes it the string 'Tie game' when there is a tie", function() {
       setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0"></td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1"></td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table><div id="message"></div><button id="lastGame">Show Me Last Games Results!</button><div id="lastGameBox"></div></body>');
       attachListeners();
+      spyOn(window, "message");
       $('[data-x="0"][data-y="0"]').click();
       $('[data-x="1"][data-y="1"]').click();
       $('[data-x="1"][data-y="2"]').click();
@@ -130,7 +131,7 @@ describe('javascript', function() {
       // _X_|_O_|_X_
       // _O_|_O_|_X_
       //  X | X | O
-      expect($("#message").html()).toEqual("Tie game");
+      expect(window.message).toHaveBeenCalledWith("Tie game");
     });
   });
 });
