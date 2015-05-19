@@ -33,10 +33,10 @@ describe('javascript', function() {
   });
 
   describe( "#player", function() {
-    it("should return the mark of the current player", function() {
+    it("should return the mark of the current player when player is X", function() {
       expect(player()).toEqual("X");
     });     
-    it("should return the mark of the current player", function() {
+    it("should return the mark of the current player when player is O", function() {
       turn = 1;
       expect(player()).toEqual("O");
     });
