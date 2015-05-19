@@ -59,7 +59,7 @@ describe('javascript', function() {
       spyOn(window, "player");
       var selector = '[data-x="1"][data-y="0"]';
       $(selector).click();
-      expect(window.player).toHaveBeenCalled;
+      expect(window.player).toHaveBeenCalled();
     });     
   });
 
