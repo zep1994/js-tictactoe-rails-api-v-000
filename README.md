@@ -15,7 +15,7 @@ Make a tic-tac-toe game that behaves like the following video (right click and s
 
 Right click on the link below and select "Save link as..." to see a video of how your calculator should behave.
 
-[video](https://s3-us-west-2.amazonaws.com/web-dev-readme-photos/js/tic-tac-toe.mov)
+[video](https://s3-us-west-2.amazonaws.com/web-dev-readme-photos/js/jquery-tic-tac-toe.mp4)
 
 ## HTML
 
@@ -66,7 +66,10 @@ To figure out how jQuery can "see" these values, take a look at the Hints sectio
 
 ## Running Your Server
 
-You can always run a Python server to see how your `index.html` behaves by running `python -m SimpleHTTPServer` from your terminal and visiting [http://localhost:8000](http://localhost:8000/).
+There a couple options to view how your code is behaving:
+
+* You can right click on your `index.html` file from Sublime or Finder and select `Open in Browser`.
+* You could also run a Python server by running `python -m SimpleHTTPServer` from your terminal and visiting [http://localhost:8000](http://localhost:8000/).
 
 ## Hints
 
