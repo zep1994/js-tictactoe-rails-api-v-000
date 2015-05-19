@@ -1,5 +1,6 @@
 var turn = 0;
 var winningCombos = [[[0,0],[1,0],[2,0]], [[0,1],[1,1],[2,1]], [[0,2],[1,2],[2,2]], [[0,0],[1,1],[2,2]], [[0,0],[0,1],[0,2]], [[2,0],[2,1],[2,2]], [[1,0],[1,1],[1,2]], [[2,0],[1,1],[0,2]]]
+
 var checkCells = function(ary) {
   for(var i = 0; i < ary.length; i++) {
     var winningCombo = ary[i];
@@ -12,13 +13,14 @@ var checkCells = function(ary) {
   }
   return true;
 }
+
 var checkWinner = function() {
   for(var i = 0; i < winningCombos.length; i++) {
     if(checkCells(winningCombos[i]) == true) {
+      message("Player " + player() + " Won!");
       return true;
     }
   }
-  message("Player " + player() + " Won!");
   return false;
 }
 
@@ -30,6 +32,7 @@ var player = function() {
     return "O";
   }
 }
+
 var tie = function() {
   var thereIsATie = true;
   $("td").each(function() {
@@ -40,28 +43,35 @@ var tie = function() {
   if (thereIsATie) message("Tie game");
   return thereIsATie;
 }
+
 var noCellMatch = function(element) {
   return (element.html() != player())
 }
+
 var doTurn = function(event){
   updateState(event);
   if(checkWinner() || tie() ) {
     resetGame();
+  } else {
+    turn += 1;
   }
-  turn += 1;
 }
+
 var resetGame = function() {
   $("td").html("");
-  var turn = 0;
+  turn = 0;
 }
+
 var message = function(message) {
   $("#message").html(message);
 }
+
 var updateState = function(event) {
   $(event.target).html(player());
 }
+
 var attachListeners = function() {
   $("tbody").click(function(event) {
     doTurn(event)
-  })
+  });
 }
