@@ -75,3 +75,34 @@ var attachListeners = function() {
     doTurn(event)
   });
 }
+
+var getAllGames = function() {
+  return $.getJSON("/games")
+}
+
+var getGame = function(id) {
+  return $.getJSON("/games/" + id)
+}
+
+var placeMark = function() {
+  var marks = getGame();
+  $("td").each(function(i) {
+    $(this).text(marks[i]);
+  })
+}
+var getMarks = function() {
+  var marks = []
+  $("td").each(function(i) {
+    marks.push($(this).text)
+  }
+  return marks;
+}
+var save = function(id) {
+  $.ajax({
+    url: "/games/" + id
+    method: "PATCH",
+    data: {
+      game: getMarks()
+    }
+  })
+}
