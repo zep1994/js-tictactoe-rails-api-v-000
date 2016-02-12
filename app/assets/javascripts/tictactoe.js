@@ -1,6 +1,6 @@
 var turn = 0;
 var winningCombos = [[[0,0],[1,0],[2,0]], [[0,1],[1,1],[2,1]], [[0,2],[1,2],[2,2]], [[0,0],[1,1],[2,2]], [[0,0],[0,1],[0,2]], [[2,0],[2,1],[2,2]], [[1,0],[1,1],[1,2]], [[2,0],[1,1],[0,2]]]
-
+var currentGame;
 var checkCells = function(ary) {
   for(var i = 0; i < ary.length; i++) {
     var winningCombo = ary[i];
@@ -51,6 +51,7 @@ var noCellMatch = function(element) {
 var doTurn = function(event){
   updateState(event);
   if(checkWinner() || tie() ) {
+    save();
     resetGame();
   } else {
     turn += 1;
@@ -74,18 +75,62 @@ var attachListeners = function() {
   $("tbody").click(function(event) {
     doTurn(event)
   });
+  $("#games").click(function(event) {
+    getGame(getGameId(event));
+  })
+  $("#save").click(function() {
+    save();
+  })
+  $("#previous").click(function() {
+    getAllGames();
+  })
+}
+
+var getGameId = function(event) {
+  return $(event.target).data("gameid")
 }
 
 var getAllGames = function() {
-  return $.getJSON("/games")
+  $.getJSON("/games").done(function(response) {
+    showGames(response.games)
+  })
+}
+
+var showGames = function(games) {
+  var dom = $()
+  games.forEach(function(game) {
+    dom = dom.add(showGame(game));
+  })
+  $("#games").html(dom);
+}
+
+var showGame = function(game) {
+  return $('<li>', {text: game.id + " - " + game.state, 'data-gameid': game.id});
 }
 
 var getGame = function(id) {
-  return $.getJSON("/games/" + id)
+  $.getJSON("/games/" + id).done(function(response) {
+    swapGame(response.game.state, id)
+  })
 }
 
-var placeMark = function() {
-  var marks = getGame();
+var swapGame = function(state, id) {
+  placeMarks(state);
+  currentGame = id;
+  turn = findTurn(state);
+}
+
+var findTurn = function(state) {
+  var turn = 0;
+  state.forEach(function(item) {
+    if(item != "") {
+      turn += 1;
+    }
+  })
+  return turn;
+}
+
+var placeMarks = function(marks) {
   $("td").each(function(i) {
     $(this).text(marks[i]);
   })
@@ -97,10 +142,14 @@ var getMarks = function() {
   })
   return marks;
 }
-var save = function(id) {
+var test = function() {
+  currentGame = -1
+}
+
+var save = function() {
   var url, method;
-  if(id) {
-    url = "/games/" + id
+  if(currentGame) {
+    url = "/games/" + currentGame
     method = "PATCH"
   } else {
     url = "/games"
@@ -109,13 +158,16 @@ var save = function(id) {
 
   $.ajax({
     url: url,
-    method: "POST",
-    dataType: "json"
+    method: method,
+    dataType: "json",
     data: {
-      game: getMarks()
+      game: {
+        state: getMarks()
+      }
     },
     success: function(data) {
-      debugger
+      currentGame = data.game.id;
+      getAllGames();
     }
   })
 }
