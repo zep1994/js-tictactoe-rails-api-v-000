@@ -142,9 +142,6 @@ var getMarks = function() {
   })
   return marks;
 }
-var test = function() {
-  currentGame = -1
-}
 
 var save = function() {
   var url, method;

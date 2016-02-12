@@ -1,6 +1,6 @@
 'use strict';
 
-describe('javascript', function() {
+// describe('javascript', function() {
   // beforeEach(function(){
   //   turn = 0;
   // });
@@ -229,18 +229,55 @@ describe('javascript', function() {
   //   });
   // });
 
-  describe( "#getMarks", function() {
-    it("should grab all the marks on the board and put them in an array", function() {
-      setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0">X</td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1">O</td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>');
+  // describe( "#getMarks", function() {
+  //   it("should grab all the marks on the board and put them in an array", function() {
+  //     setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0">X</td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1">O</td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table></body>');
 
-      expect(getMarks()).toEqual(["X","","","O","","","","",""]);
-    });     
-  });
+  //     expect(getMarks()).toEqual(["X","","","O","","","","",""]);
+  //   });     
+  // });
+ 
 
-  describe( "#test", function() {
-    it("set the currentGame to -1", function() {
-      test()
-      expect(currentGame).toEqual(-1);
-    });     
+
+describe('#getAllGames', function() {
+  it("retrieve all the saved games and show them in the games div", function() {
+    setFixtures('<body><table border="1" cellpadding="40"><tr><td data-x="0", data-y="0">X</td><td data-x="1", data-y="0"></td><td data-x="2", data-y="0"></td></tr><tr><td data-x="0", data-y="1">O</td><td data-x="1", data-y="1"></td><td data-x="2", data-y="1"></td></tr><tr><td data-x="0", data-y="2"></td><td data-x="1", data-y="2"></td><td data-x="2", data-y="2"></td></tr></table><div id="games"></div><div id="message"></div><button id="save">Save Game</button><button id="previous">Show Previous Games</button></body>');
+    jasmine.Ajax.withMock(function() {
+      // spyOn(window, "getAllGames")
+      // expect(window.getAllGames).not.toHaveBeenCalled();
+      getAllGames();
+      // var data = {
+      //   game: {
+      //     id:1,
+      //     state: ["X","","","","","","","",""]
+      //   }
+      // }
+      var data = {
+        games: [{
+          id:1,
+          state: ["X","","","","","","","",""]
+        }]
+      }
+      var response = {
+        "status": 200, 
+        "contentType": 'application/json',
+        "responseText" : JSON.stringify(data)
+      }
+      jasmine.Ajax.requests.mostRecent().respondWith(response);
+      expect($("#games").children().length).toEqual(1)
+      // expect(window.getAllGames).toHaveBeenCalled();
+      // expect(currentGame).toEqual(1)
+    });
   });
+  it("should update the currentGame and call getAllGames", function() {
+    jasmine.Ajax.withMock(function() {
+      // click a couple squares, click save
+      // it should sent a POST
+      // click save again and it should send a patch!
+      // don't call the save method, click the buttons using jasmine jquery
+      var request = jasmine.Ajax.requests.mostRecent();
+      expect(request.url).toBe('/games');
+      expect(request.method).toBe('POST');
+    });
+  });     
 });
