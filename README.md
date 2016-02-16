@@ -10,7 +10,9 @@ Right click on the link below and select "Save link as..." to see a video of how
 
 ## HTML
 
-You may never have built a "single page app" before so check out the directory structure.  Here we're using a Rails app to serve up some HTML.  We're also using the asset pipeline to load all our Javascript.  The JS code needs to do two things.  You'll first need to create a simple game of Tic Tac Toe.  Once that's done you'll need to figure out how to let the user persist the state of their game and see old games.  Lastly the user should be able to click on an old game and resume playing that game.
+You may never have built a "single page app" before so check out the directory structure.  Here we're using a Rails app to serve up some HTML.  There's really only one view, the main root route.  Once rails loads that everything will be done using AJAX with rails serving as our API.
+
+We're be leveraging the asset pipeline to load all our Javascript so check out the manifest.  The main HTML file is in `views/home/index.html` Our JS code needs to do two things.  We'll first need to create a simple game of Tic Tac Toe.  Once that's done we'll need to figure out how to let the user persist the state of their game and see old games.  Lastly the user should be able to click on an old game and resume playing that game.
 
 The grid is made by a table. Each square is in a table row, or `tr` and each square is a table data, or `td` (you could also call this a cell).
 
@@ -55,12 +57,12 @@ The lower right corner has an x of 2 and a y of 2.
 
 ## Persistence
 
-Because this is the final project in the Javascript section, for the persistence functionality we've intentionally left the implemenation vague.  The tests are integration tests which actually simulate a user clicking around in the browser rather than us telling you exactly what functions to define and what they should do.  What you choose to use as your backend server is up to you.  You could use Rails, Sinatra, or even a whole 'nother programming language (although it's probably best to stick to what you know).  The only thing the tests require is that the server responds to a few routes:
+Because this is the final project in the Javascript section, for the persistence functionality we've intentionally left the implemenation vague.  The tests are integration tests which actually simulate a user clicking around in the browser rather than us telling you exactly what functions to define and what they should do.  In theory it wouldn't matter what backend framework and language you used to implement the functionality.  In practice, there are some rspec tests that make sure your server responds in a sensible way.  The only thing the tests require is that the server responds to a few routes:
 * GET "/games"
 * POST "/games/:id"
 * PATCH "/games/:id"
 
-**Note**The actual tests will mock out the responses so your backend should conform to the requests and responses it assumes.
+**Note**On the Javascript side the actual tests will mock out the responses so your backend should send the responses the front end tests are simulating.
 
 ## Resources
 
