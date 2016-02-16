@@ -76,7 +76,8 @@ var attachListeners = function() {
     doTurn(event)
   });
   $("#games").click(function(event) {
-    getGame(getGameId(event));
+    var state = parseState(event)
+    swapGame(state, getGameId(event))
   })
   $("#save").click(function() {
     save();
@@ -85,7 +86,9 @@ var attachListeners = function() {
     getAllGames();
   })
 }
-
+var parseState = function(event) {
+  return $(event.target).data("state").split(",")
+}
 var getGameId = function(event) {
   return $(event.target).data("gameid")
 }
@@ -105,13 +108,7 @@ var showGames = function(games) {
 }
 
 var showGame = function(game) {
-  return $('<li>', {text: game.id + " - " + game.state, 'data-gameid': game.id});
-}
-
-var getGame = function(id) {
-  $.getJSON("/games/" + id).done(function(response) {
-    swapGame(response.game.state, id)
-  })
+  return $('<li>', {'data-state': game.state, 'data-gameid': game.id, text: game.id});
 }
 
 var swapGame = function(state, id) {
@@ -163,8 +160,11 @@ var save = function() {
       }
     },
     success: function(data) {
-      currentGame = data.game.id;
-      getAllGames();
+      if(currentGame) {
+        currentGame = data.game.id;
+      } else {
+        currentGame = undefined
+      }
     }
   })
 }

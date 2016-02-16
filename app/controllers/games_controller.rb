@@ -22,7 +22,6 @@ class GamesController < ApplicationController
 
   def update
     game = Game.find(params[:id])
-    binding.pry
     game.update_attributes(game_params)
   end
 

@@ -1,27 +1,16 @@
 # jQuery Tic-Tac-Toe
 
-## Contents
-
-* Objective
-* HTML
-* JavaScript
-* Running your server
-* Hints
-* Resources
-
 ## Objective
 
 Make a tic-tac-toe game that behaves like the following video (right click and select Save Link As..) 
 
-Right click on the link below and select "Save link as..." to see a video of how your calculator should behave.
+Right click on the link below and select "Save link as..." to see a video of how your game should behave.
 
-[video](https://s3-us-west-2.amazonaws.com/web-dev-readme-photos/js/jquery-tic-tac-toe.mp4)
+[video](http://flatiron-videos.s3.amazonaws.com/Learn%20Curriculum%20Helpers/ttt.mov)
 
 ## HTML
 
-The `index.html` page, when served, looks like this:
-
-![tic-tac-toe board](https://s3-us-west-2.amazonaws.com/web-dev-readme-photos/js/jquery-tic-tac-toe-board)
+You may never have built a "single page app" before so check out the directory structure.  Here we're using a Rails app to serve up some HTML.  We're also using the asset pipeline to load all our Javascript.  The JS code needs to do two things.  You'll first need to create a simple game of Tic Tac Toe.  Once that's done you'll need to figure out how to let the user persist the state of their game and see old games.  Lastly the user should be able to click on an old game and resume playing that game.
 
 The grid is made by a table. Each square is in a table row, or `tr` and each square is a table data, or `td` (you could also call this a cell).
 
@@ -43,9 +32,9 @@ The lower right corner has an x of 2 and a y of 2.
 <td data-x="2" data-y="2"></td>
 ```
 
-To figure out how jQuery can "see" these values, take a look at the Hints section.
+## JavaScript TTT
 
-## JavaScript
+  For the actual TTT functionality, we've given you a lot of structure and the tests force you down a pretty specific path as far as what functions you should define and what they should do.
 
 * `attachListeners()`
   * You must have a function called `attachlisteners()` which the tests call to attach the click handlers to the page after the DOM has been loaded
@@ -64,42 +53,14 @@ To figure out how jQuery can "see" these values, take a look at the Hints sectio
 * `message()`
   * This function should accept a string and add the string to the `div` with an id of "message" 
 
-## Running Your Server
+## Persistence
 
-There a couple options to view how your code is behaving:
+Because this is the final project in the Javascript section, for the persistence functionality we've intentionally left the implemenation vague.  The tests are integration tests which actually simulate a user clicking around in the browser rather than us telling you exactly what functions to define and what they should do.  What you choose to use as your backend server is up to you.  You could use Rails, Sinatra, or even a whole 'nother programming language (although it's probably best to stick to what you know).  The only thing the tests require is that the server responds to a few routes:
+* GET "/games"
+* POST "/games/:id"
+* PATCH "/games/:id"
 
-* You can right click on your `index.html` file from Sublime or Finder and select `Open in Browser`.
-* You could also run a Python server by running `python -m SimpleHTTPServer` from your terminal and visiting [http://localhost:8000](http://localhost:8000/).
-
-## Hints
-
-#### jQuery data()
-
-Each `td` or cell in the table has two data attributes, "x" and "y". jQuery has built out a function, `data()`.
-
-Take a look at it below:
-
-```html
-<p data-position="center" id="title">Comedy Cellar</p>
-<p data-place="right" class="btn" id"about">About</p>
-<script type="text/javascript">
-  $("#title").on("click", function() {
-    var location = $(this).data("position");
-    console.log(location);
-  });
-
-  $("#about").on("click", function() {
-    var location = $(this).data("place");
-    alert(location);
-  });
-</script>
-```
-
-When the client clicks on `Comedy Cellar`, the JavaScript will log the string "center" to the console. 
-
-When the client clicks on `About`, the JavaScript will make an alert box with the string "right".
-
-Take a loook at the [jQuery data() docs](https://api.jquery.com/jquery.data/) for more info.
+**Note**The actual tests will mock out the responses so your backend should conform to the requests and responses it assumes.
 
 ## Resources
 
