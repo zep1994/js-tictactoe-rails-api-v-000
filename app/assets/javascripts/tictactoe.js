@@ -51,7 +51,7 @@ var noCellMatch = function(element) {
 var doTurn = function(event){
   updateState(event);
   if(checkWinner() || tie() ) {
-    save();
+    save(true);
     resetGame();
   } else {
     turn += 1;
@@ -61,6 +61,7 @@ var doTurn = function(event){
 var resetGame = function() {
   $("td").html("");
   turn = 0;
+  currentGame = 0
 }
 
 var message = function(message) {
@@ -140,7 +141,7 @@ var getMarks = function() {
   return marks;
 }
 
-var save = function() {
+var save = function(resetCurrentGame) {
   var url, method;
   if(currentGame) {
     url = "/games/" + currentGame
@@ -160,10 +161,10 @@ var save = function() {
       }
     },
     success: function(data) {
-      if(currentGame) {
-        currentGame = data.game.id;
+      if(resetCurrentGame) {
+        currentGame = undefined;
       } else {
-        currentGame = undefined
+        currentGame = data.game.id;
       }
     }
   })
