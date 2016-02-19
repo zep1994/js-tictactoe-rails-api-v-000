@@ -62,7 +62,9 @@ Because this is the final project in the JavaScript section, for the persistence
 * POST "/games/:id"
 * PATCH "/games/:id"
 
-**Note**On the JavaScript side the actual tests will mock out the responses so your backend should send the responses the front end tests are simulating.
+**Note** On the JavaScript side the actual tests will mock out the responses so your backend should send the responses the front end tests are simulating.
+
+Running `learn` will only run the Jasmine tests. If you want to run the Rspec tests, make sure you run `rspec` separately. If you seem to be having issues running the Rspec tests, run `spring stop` followed by `rspec`.
 
 ## Resources
 
