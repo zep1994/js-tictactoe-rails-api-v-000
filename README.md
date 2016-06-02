@@ -12,7 +12,7 @@ Right click on the link below and select "Save link as..." to see a video of how
 
 You may never have built a "single page app" before so check out the directory structure.  Here we're using a Rails app to serve up some HTML.  There's really only one view, the main root route.  Once rails loads that everything will be done using AJAX with rails serving as our API.
 
-We're be leveraging the asset pipeline to load all our JavaScript so check out the manifest.  The main HTML file is in `views/home/index.html` Our JS code needs to do two things.  We'll first need to create a simple game of Tic Tac Toe.  Once that's done we'll need to figure out how to let the user persist the state of their game and see old games.  Lastly the user should be able to click on an old game and resume playing that game.
+We'll be leveraging the asset pipeline to load all our JavaScript so check out the manifest.  The main HTML file is in `views/home/index.html` Our JS code needs to do two things.  We'll first need to create a simple game of Tic Tac Toe.  Once that's done we'll need to figure out how to let the user persist the state of their game and see old games.  Lastly the user should be able to click on an old game and resume playing that game.
 
 The grid is made by a table. Each square is in a table row, or `tr` and each square is a table data, or `td` (you could also call this a cell).
 
@@ -69,3 +69,5 @@ Running `learn` will only run the Jasmine tests. If you want to run the Rspec te
 ## Resources
 
 * [jQuery data()](https://api.jquery.com/jquery.data/)
+
+<p class='util--hide'>View <a href='https://learn.co/lessons/js-tictactoe-rails-api'>jQuery Tic Tac Toe</a> on Learn.co and start learning to code for free.</p>
