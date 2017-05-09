@@ -1,5 +1,7 @@
 # jQuery Tic-Tac-Toe
 
+## Note: This lab does not work on the Learn IDE (we are in the process of upgrading it!). You can skip it for now and come back to it when it's upgraded OR you can [switch to a local environment](http://help.learn.co/workflow-tips/local-environment/setting-up-a-local-environment): 
+
 ## Objective
 
 Make a tic-tac-toe game that behaves like the following video.
