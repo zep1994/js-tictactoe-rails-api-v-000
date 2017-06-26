@@ -17,6 +17,7 @@ const saveButton = window.document.getElementById('save');
 const previousButton = window.document.getElementById('previous');
 const clearButton = window.document.getElementById('clear');
 
+// Define helper functions
 function resetFixtures() {
   for (let i = 0; i < 9; i++) {
     squares[i].innerHTML = '';
@@ -31,6 +32,7 @@ function populateBoard(arr) {
     squares[i].innerHTML = arr[i];
   }
 }
+// End helper function definitions
 
 describe('tictactoe.js', () => {
   describe('player()', () => {
@@ -345,6 +347,45 @@ describe('Gameplay', () => {
 });
 
 describe('AJAX interactions with the Rails API', () => {
+
+  // Define helper functions
+  function jsonifyGame(board) {
+    return JSON.stringify({
+      "data": {
+        "id": "1",
+        "type": "games",
+        "attributes": {
+          "state": board
+        }
+      },
+      "jsonapi": {
+        "version": "1.0"
+      }
+    });
+  }
+
+  function jsonifyGames(boards) {
+    const jsonObj = {
+      "data": [],
+      "jsonapi": {
+        "version": "1.0"
+      }
+    };
+
+    for (let i = 0, l = boards.length; i < l; i++) {
+      jsonObj.data.push({
+        "id": "" + (i + 1),
+        "type": "games",
+        "attributes": {
+          "state": boards[i]
+        }
+      });
+    }
+
+    return JSON.stringify(jsonObj);
+  }
+  // End helper function definitions
+
   describe('Clicking the button#previous element', () => {
     beforeEach(() => {
       xhr = sinon.useFakeXMLHttpRequest();
@@ -371,14 +412,7 @@ describe('AJAX interactions with the Rails API', () => {
         requests[0].respond(
           200,
           { 'Content-Type': 'application/json' },
-          JSON.stringify(
-            {
-              "data": [],
-              "jsonapi": {
-                "version": "1.0"
-              }
-            }
-          )
+          jsonifyGames([])
         );
 
         expect(gamesDiv.children.length).to.equal(0);
@@ -392,29 +426,10 @@ describe('AJAX interactions with the Rails API', () => {
         requests[0].respond(
           200,
           { 'Content-Type': 'application/json' },
-          JSON.stringify(
-            {
-              "data": [
-                {
-                  "id": "1",
-                  "type": "games",
-                  "attributes": {
-                    "state": ["", "", "", "", "", "", "", "", ""]
-                  }
-                },
-                {
-                  "id": "2",
-                  "type": "games",
-                  "attributes": {
-                    "state": ["O", "X", "O", "", "X", "X", "", "X", "O"] // 'X' wins
-                  }
-                }
-              ],
-              "jsonapi": {
-                "version": "1.0"
-              }
-            }
-          )
+          jsonifyGames([
+            ['', '', '', '', '', '', '', '', ''],
+            ['O', 'X', 'O', '', 'X', 'X', '', 'X', 'O'] // 'X' wins
+          ])
         );
 
         const gameButtons = Array.from(gamesDiv.children).filter(c => c.tagName === 'BUTTON');
@@ -428,36 +443,11 @@ describe('AJAX interactions with the Rails API', () => {
         requests[0].respond(
           200,
           { 'Content-Type': 'application/json' },
-          JSON.stringify(
-            {
-              "data": [
-                {
-                  "id": "1",
-                  "type": "games",
-                  "attributes": {
-                    "state": ["", "", "", "", "", "", "", "", ""]
-                  }
-                },
-                {
-                  "id": "2",
-                  "type": "games",
-                  "attributes": {
-                    "state": ["O", "X", "O", "", "X", "X", "", "X", "O"] // 'X' wins
-                  }
-                },
-                {
-                  "id": "3",
-                  "type": "games",
-                  "attributes": {
-                    "state": ["X", "X", "O", "O", "O", "X", "X", "X", "O"] // Tie game
-                  }
-                }
-              ],
-              "jsonapi": {
-                "version": "1.0"
-              }
-            }
-          )
+          jsonifyGames([
+            ['', '', '', '', '', '', '', '', ''],
+            ['O', 'X', 'O', '', 'X', 'X', '', 'X', 'O'], // 'X' wins
+            ['X', 'X', 'O', 'O', 'O', 'X', 'X', 'X', 'O'] // Tie game
+          ])
         );
 
         previousButton.click();
@@ -465,43 +455,12 @@ describe('AJAX interactions with the Rails API', () => {
         requests[1].respond(
           200,
           { 'Content-Type': 'application/json' },
-          JSON.stringify(
-            {
-              "data": [
-                {
-                  "id": "1",
-                  "type": "games",
-                  "attributes": {
-                    "state": ["", "", "", "", "", "", "", "", ""]
-                  }
-                },
-                {
-                  "id": "2",
-                  "type": "games",
-                  "attributes": {
-                    "state": ["O", "X", "O", "", "X", "X", "", "X", "O"] // 'X' wins
-                  }
-                },
-                {
-                  "id": "3",
-                  "type": "games",
-                  "attributes": {
-                    "state": ["X", "X", "O", "O", "O", "X", "X", "X", "O"] // Tie game
-                  }
-                },
-                {
-                  "id": "4",
-                  "type": "games",
-                  "attributes": {
-                    "state": ["O", "X", "", "", "", "", "", "", ""] // In-progress
-                  }
-                }
-              ],
-              "jsonapi": {
-                "version": "1.0"
-              }
-            }
-          )
+          jsonifyGames([
+            ['', '', '', '', '', '', '', '', ''],
+            ['O', 'X', 'O', '', 'X', 'X', '', 'X', 'O'], // 'X' wins
+            ['X', 'X', 'O', 'O', 'O', 'X', 'X', 'X', 'O'], // Tie game
+            ['O', 'X', '', '', '', '', '', '', ''] // In-progress
+          ])
         );
 
         const gameButtons = Array.from(gamesDiv.children).filter(c => c.tagName === 'BUTTON');
@@ -539,20 +498,7 @@ describe('AJAX interactions with the Rails API', () => {
         requests[0].respond(
           201,
           { 'Content-Type': 'application/json' },
-          JSON.stringify(
-            {
-              "data": {
-                "id": "1",
-                "type": "games",
-                "attributes": {
-                  "state": ["", "", "", "", "", "", "", "", ""]
-                }
-              },
-              "jsonapi": {
-                "version": "1.0"
-              }
-            }
-          )
+          jsonifyGame(['', '', '', '', '', '', '', '', ''])
         );
 
         saveButton.click();
@@ -605,20 +551,7 @@ describe('AJAX interactions with the Rails API', () => {
         requests[0].respond(
           201,
           { 'Content-Type': 'application/json' },
-          JSON.stringify(
-            {
-              "data": {
-                "id": "1",
-                "type": "games",
-                "attributes": {
-                  "state": ["", "", "", "", "", "", "", "", ""]
-                }
-              },
-              "jsonapi": {
-                "version": "1.0"
-              }
-            }
-          )
+          jsonifyGame(['', '', '', '', '', '', '', '', ''])
         );
 
         clearButton.click();
@@ -692,22 +625,9 @@ describe('AJAX interactions with the Rails API', () => {
       requests[0].respond(
         200,
         { 'Content-Type': 'application/json' },
-        JSON.stringify(
-          {
-            "data": [
-              {
-                "id": "1",
-                "type": "games",
-                "attributes": {
-                  "state": ["", "", "", "", "X", "", "", "O", ""]
-                }
-              }
-            ],
-            "jsonapi": {
-              "version": "1.0"
-            }
-          }
-        )
+        jsonifyGames([
+          ['', '', '', '', 'X', '', '', 'O', '']
+        ])
       );
 
       const gameButtons = Array.from(gamesDiv.children).filter(c => c.tagName === 'BUTTON');
@@ -724,22 +644,9 @@ describe('AJAX interactions with the Rails API', () => {
       requests[0].respond(
         200,
         { 'Content-Type': 'application/json' },
-        JSON.stringify(
-          {
-            "data": [
-              {
-                "id": "1",
-                "type": "games",
-                "attributes": {
-                  "state": ["", "", "", "", "X", "", "", "O", ""]
-                }
-              }
-            ],
-            "jsonapi": {
-              "version": "1.0"
-            }
-          }
-        )
+        jsonifyGames([
+          ['', '', '', '', 'X', '', '', 'O', '']
+        ])
       );
 
       const gameButtons = Array.from(gamesDiv.children).filter(c => c.tagName === 'BUTTON');
@@ -749,20 +656,7 @@ describe('AJAX interactions with the Rails API', () => {
       requests[1].respond(
         200,
         { 'Content-Type': 'application/json' },
-        JSON.stringify(
-          {
-            "data": {
-              "id": "1",
-              "type": "games",
-              "attributes": {
-                "state": ["", "", "", "", "X", "", "", "O", ""]
-              }
-            },
-            "jsonapi": {
-              "version": "1.0"
-            }
-          }
-        )
+        jsonifyGame(['', '', '', '', 'X', '', '', 'O', ''])
       );
 
       const board = Array.from(squares).map(s => s.innerHTML);
@@ -777,22 +671,9 @@ describe('AJAX interactions with the Rails API', () => {
       requests[0].respond(
         200,
         { 'Content-Type': 'application/json' },
-        JSON.stringify(
-          {
-            "data": [
-              {
-                "id": "1",
-                "type": "games",
-                "attributes": {
-                  "state": ["", "", "", "", "X", "", "", "O", ""]
-                }
-              }
-            ],
-            "jsonapi": {
-              "version": "1.0"
-            }
-          }
-        )
+        jsonifyGames([
+          ['', '', '', '', 'X', '', '', 'O', '']
+        ])
       );
 
       const gameButtons = Array.from(gamesDiv.children).filter(c => c.tagName === 'BUTTON');
@@ -802,20 +683,7 @@ describe('AJAX interactions with the Rails API', () => {
       requests[1].respond(
         200,
         { 'Content-Type': 'application/json' },
-        JSON.stringify(
-          {
-            "data": {
-              "id": "1",
-              "type": "games",
-              "attributes": {
-                "state": ["", "", "", "", "X", "", "", "O", ""]
-              }
-            },
-            "jsonapi": {
-              "version": "1.0"
-            }
-          }
-        )
+        jsonifyGame(['', '', '', '', 'X', '', '', 'O', ''])
       );
 
       saveButton.click();
