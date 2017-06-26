@@ -69,7 +69,7 @@ describe('tictactoe.js', () => {
 
       window.updateState(squares[4]);
 
-      expect(spy.calledOnce).to.equal(true);
+      expect(spy.calledOnce).to.be.true;
     });
 
     it("adds the current player's token to the passed-in <td> element", () => {
@@ -118,7 +118,7 @@ describe('tictactoe.js', () => {
       // -----------
       //  O | O |   
 
-      expect(window.checkWinner()).to.equal(true);
+      expect(window.checkWinner()).to.be.true;
     });
 
     it('returns true when a player wins diagonally', () => {
@@ -129,7 +129,7 @@ describe('tictactoe.js', () => {
       // -----------
       //  O | X |   
 
-      expect(window.checkWinner()).to.equal(true);
+      expect(window.checkWinner()).to.be.true;
     });
 
     it('returns true when a player wins vertically', () => {
@@ -140,7 +140,7 @@ describe('tictactoe.js', () => {
       // -----------
       //  O |   | X 
 
-      expect(window.checkWinner()).to.equal(true);
+      expect(window.checkWinner()).to.be.true;
     });
 
     it('returns false if no winning combination is present on the board', () => {
@@ -210,7 +210,7 @@ describe('tictactoe.js', () => {
 
       window.doTurn(squares[8]);
 
-      expect(spy.calledOnce).to.equal(true);
+      expect(spy.calledOnce).to.be.true;
     });
 
     it('invokes the updateState() function', () => {
@@ -218,7 +218,7 @@ describe('tictactoe.js', () => {
 
       window.doTurn(squares[0]);
 
-      expect(spy.calledOnce).to.equal(true);
+      expect(spy.calledOnce).to.be.true;
     });
 
     it('invokes the message() function with the argument "Tie game." when the game is tied', () => {
@@ -274,11 +274,11 @@ describe('tictactoe.js', () => {
 
       squares[0].click();
 
-      expect(spy.calledOnce).to.equal(true);
+      expect(spy.calledOnce).to.be.true;
 
       squares[8].click();
 
-      expect(spy.calledTwice).to.equal(true);
+      expect(spy.calledTwice).to.be.true;
     });
 
     it('passes the clicked-on <td> element to doTurn()', () => {
