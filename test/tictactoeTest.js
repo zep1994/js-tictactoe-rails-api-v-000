@@ -26,6 +26,12 @@ function resetFixtures() {
   gamesDiv.innerHTML = '';
 }
 
+function populateBoard(arr) {
+  for (let i = 0; i < 9; i++) {
+    squares[i].innerHTML = arr[i];
+  }
+}
+
 describe('tictactoe.js', () => {
   describe('player()', () => {
     afterEach(() => {
@@ -105,8 +111,7 @@ describe('tictactoe.js', () => {
     });
 
     it('returns true when a player wins horizontally', () => {
-      squares[0].innerHTML = squares[1].innerHTML = squares[2].innerHTML = 'X';
-      squares[6].innerHTML = squares[7].innerHTML = 'O';
+      populateBoard(['X', 'X', 'X', '', '', '', 'O', 'O', '']);
       //  X | X | X 
       // -----------
       //    |   |   
@@ -117,8 +122,7 @@ describe('tictactoe.js', () => {
     });
 
     it('returns true when a player wins diagonally', () => {
-      squares[0].innerHTML = squares[1].innerHTML = squares[7].innerHTML = 'X';
-      squares[2].innerHTML = squares[4].innerHTML = squares[6].innerHTML = 'O';
+      populateBoard(['X', 'X', 'O', '', 'O', '', 'O', 'X', '']);
       //  X | X | O 
       // -----------
       //    | O |   
@@ -129,8 +133,7 @@ describe('tictactoe.js', () => {
     });
 
     it('returns true when a player wins vertically', () => {
-      squares[2].innerHTML = squares[5].innerHTML = squares[8].innerHTML = 'X';
-      squares[0].innerHTML = squares[4].innerHTML = squares[6].innerHTML = 'O';
+      populateBoard(['O', '', 'X', '', 'O', 'X', 'O', '', 'X']);
       //  O |   | X 
       // -----------
       //    | O | X 
@@ -143,8 +146,7 @@ describe('tictactoe.js', () => {
     it('returns false if no winning combination is present on the board', () => {
       expect(window.checkWinner()).to.equal(false);
 
-      squares[0].innerHTML = squares[2].innerHTML = squares[3].innerHTML = squares[5].innerHTML = squares[7].innerHTML = 'X';
-      squares[1].innerHTML = squares[4].innerHTML = squares[6].innerHTML = squares[8].innerHTML = 'O';
+      populateBoard(['X', 'O', 'X', 'X', 'O', 'X', 'O', 'X', 'O']);
       //  X | O | X 
       // -----------
       //  X | O | X 
@@ -157,8 +159,7 @@ describe('tictactoe.js', () => {
     it('invokes the message() function with the argument "Player X Won!" when player X wins', () => {
       const spy = sandbox.stub(window, 'message');
 
-      squares[3].innerHTML = squares[4].innerHTML = squares[5].innerHTML = 'X';
-      squares[6].innerHTML = squares[7].innerHTML = 'O';
+      populateBoard(['', '', '', 'X', 'X', 'X', 'O', 'O', '']);
       //    |   |   
       // -----------
       //  X | X | X 
@@ -173,8 +174,7 @@ describe('tictactoe.js', () => {
     it('invokes the message() function with the argument "Player O Won!" when player O wins', () => {
       const spy = sandbox.stub(window, 'message');
 
-      squares[3].innerHTML = squares[5].innerHTML = squares[6].innerHTML = 'X';
-      squares[0].innerHTML = squares[4].innerHTML = squares[8].innerHTML = 'O';
+      populateBoard(['O', '', '', 'X', 'O', 'X', 'X', '', 'O']);
       //  O |   |   
       // -----------
       //  X | O | X 
@@ -226,8 +226,7 @@ describe('tictactoe.js', () => {
 
       const spy = sandbox.spy(window, 'message');
 
-      squares[0].innerHTML = squares[2].innerHTML = squares[3].innerHTML = squares[5].innerHTML = 'X';
-      squares[1].innerHTML = squares[4].innerHTML = squares[6].innerHTML = squares[8].innerHTML = 'O';
+      populateBoard(['X', 'O', 'X', 'X', 'O', 'X', 'O', '', 'O']);
       //  X | O | X 
       // -----------
       //  X | O | X 
@@ -243,8 +242,7 @@ describe('tictactoe.js', () => {
     it('resets the board and the "turn" counter when a game is won', () => {
       sinon.useFakeXMLHttpRequest();
 
-      squares[0].innerHTML = squares[2].innerHTML = squares[3].innerHTML = squares[5].innerHTML = 'X';
-      squares[1].innerHTML = squares[4].innerHTML = squares[6].innerHTML = squares[8].innerHTML = 'O';
+      populateBoard(['X', 'O', 'X', 'X', 'O', 'X', 'O', '', 'O']);
       //  X | O | X 
       // -----------
       //  X | O | X 
@@ -311,8 +309,7 @@ describe('Gameplay', () => {
   });
 
   it('Users cannot play any turns once a game is won or tied', () => {
-    squares[0].innerHTML = squares[1].innerHTML = squares[2].innerHTML = 'X';
-    squares[6].innerHTML = squares[7].innerHTML = 'O';
+    populateBoard(['X', 'X', 'X', '', '', '', 'O', 'O', '']);
     window.turn = 5;
     //  X | X | X 
     // -----------
@@ -329,8 +326,7 @@ describe('Gameplay', () => {
   it('Users can play multiple games', () => {
     sinon.useFakeXMLHttpRequest();
 
-    squares[0].innerHTML = squares[2].innerHTML = squares[3].innerHTML = squares[5].innerHTML = 'X';
-    squares[1].innerHTML = squares[4].innerHTML = squares[6].innerHTML = squares[8].innerHTML = 'O';
+    populateBoard(['X', 'O', 'X', 'X', 'O', 'X', 'O', '', 'O']);
     //  X | O | X 
     // -----------
     //  X | O | X 
@@ -648,8 +644,7 @@ describe('AJAX interactions with the Rails API', () => {
     });
 
     it('auto-saves tie games', () => {
-      squares[0].innerHTML = squares[2].innerHTML = squares[3].innerHTML = squares[5].innerHTML = 'X';
-      squares[1].innerHTML = squares[4].innerHTML = squares[6].innerHTML = squares[8].innerHTML = 'O';
+      populateBoard(['X', 'O', 'X', 'X', 'O', 'X', 'O', '', 'O']);
       //  X | O | X 
       // -----------
       //  X | O | X 
@@ -664,8 +659,7 @@ describe('AJAX interactions with the Rails API', () => {
     });
 
     it('auto-saves won games', () => {
-      squares[0].innerHTML = squares[1].innerHTML = 'X';
-      squares[6].innerHTML = squares[7].innerHTML = 'O';
+      populateBoard(['X', 'X', '', '', '', '', 'O', 'O', '']);
       window.turn = 4;
       //  X | X |   
       // -----------
