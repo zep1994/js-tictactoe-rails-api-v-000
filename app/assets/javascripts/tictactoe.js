@@ -1,176 +1,137 @@
+// Code your JavaScript / jQuery solution here
+
+const WINNING_COMBOS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6],
+                        [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
 var turn = 0;
-var winningCombos = [[[0,0],[1,0],[2,0]], [[0,1],[1,1],[2,1]], [[0,2],[1,2],[2,2]], [[0,0],[1,1],[2,2]], [[0,0],[0,1],[0,2]], [[2,0],[2,1],[2,2]], [[1,0],[1,1],[1,2]], [[2,0],[1,1],[0,2]]]
-var currentGame;
-var checkCells = function(ary) {
-  for(var i = 0; i < ary.length; i++) {
-    var winningCombo = ary[i];
-    var x = winningCombo[0];
-    var y = winningCombo[1];
-    var selector = $('[data-x="' + x + '"][data-y="' + y + '"]')
-    if( noCellMatch(selector)) {
-      return false;
-    }
-  }
-  return true;
-}
+var currentGame = 0;
 
-var checkWinner = function() {
-  for(var i = 0; i < winningCombos.length; i++) {
-    if(checkCells(winningCombos[i]) == true) {
-      message("Player " + player() + " Won!");
-      return true;
-    }
-  }
-  return false;
-}
+$(document).ready(function() {
+  attachListeners();
+});
 
-var player = function() {
-  if(turn % 2 == 0) {
-    return "X";
-  }
-  else {
-    return "O";
+var player = () => turn % 2 ? 'O' : 'X';
+
+function doTurn(square) {
+  updateState(square);
+  turn++;
+  if (checkWinner()) {
+    saveGame();
+    resetBoard();
+  } else if (turn === 9) {
+    message("Tie game.");
+    saveGame();
+    resetBoard();
   }
 }
 
-var tie = function() {
-  var thereIsATie = true;
-  $("td").each(function() {
-    if ($(this).html().length <= 0) {
-      thereIsATie = false;
-    }
-  });
-  if (thereIsATie) message("Tie game");
-  return thereIsATie;
-}
-
-var noCellMatch = function(element) {
-  return (element.html() != player())
-}
-
-var doTurn = function(event){
-  updateState(event);
-  if(checkWinner() || tie() ) {
-    save(true);
-    resetGame();
-  } else {
-    turn += 1;
-  }
-}
-
-var resetGame = function() {
-  $("td").html("");
+function resetBoard() {
+  $('td').empty();
   turn = 0;
-  currentGame = 0
+  currentGame = 0;
 }
 
-var message = function(message) {
-  $("#message").html(message);
-}
-
-var updateState = function(event) {
-  $(event.target).html(player());
-}
-
-var attachListeners = function() {
-  $("tbody").click(function(event) {
-    doTurn(event)
+function attachListeners() {
+  $('td').on('click', function() {
+    if (!$.text(this) && !checkWinner()) {
+      doTurn(this);
+    }
   });
-  $("#games").click(function(event) {
-    var state = parseState(event)
-    swapGame(state, getGameId(event))
-  })
-  $("#save").click(function() {
-    save();
-  })
-  $("#previous").click(function() {
-    getAllGames();
-  })
-}
-var parseState = function(event) {
-  return $(event.target).data("state").split(",")
-}
-var getGameId = function(event) {
-  return $(event.target).data("gameid")
+
+  $('#save').on('click', () => saveGame());
+  $('#previous').on('click', () => showPreviousGames());
+  $('#clear').on('click', () => resetBoard());
 }
 
-var getAllGames = function() {
-  $.getJSON("/games").done(function(response) {
-    showGames(response.games)
-  })
-}
+function checkWinner() {
+  var board = {};
+  var winner = false;
 
-var showGames = function(games) {
-  var dom = $()
-  games.forEach(function(game) {
-    dom = dom.add(showGame(game));
-  })
-  $("#games").html(dom);
-}
+  $('td').text((index, square) => board[index] = square);
 
-var showGame = function(game) {
-  return $('<li>', {'data-state': game.state, 'data-gameid': game.id, text: game.id});
-}
-
-var swapGame = function(state, id) {
-  placeMarks(state);
-  currentGame = id;
-  turn = findTurn(state);
-}
-
-var findTurn = function(state) {
-  var turn = 0;
-  state.forEach(function(item) {
-    if(item != "") {
-      turn += 1;
+  WINNING_COMBOS.some(function(combo) {
+    if (board[combo[0]] !== "" && board[combo[0]] === board[combo[1]] && board[combo[1]] === board[combo[2]]) {
+      message(`Player ${board[combo[0]]} Won!`);
+      return winner = true;
     }
-  })
-  return turn;
+  });
+
+  return winner;
 }
 
-var placeMarks = function(marks) {
-  $("td").each(function(i) {
-    $(this).text(marks[i]);
-  })
-}
-var getMarks = function() {
-  var marks = []
-  $("td").each(function(i) {
-    marks.push($(this).text())
-  })
-  return marks;
+function updateState(square) {
+  var token = player();
+  $(square).text(token);
 }
 
-var save = function(resetCurrentGame) {
-  var url, method;
-  if(currentGame) {
-    url = "/games/" + currentGame
-    method = "PATCH"
+function message(string) {
+  $('#message').text(string);
+}
+
+function saveGame() {
+  var state = [];
+  var gameData;
+
+  $('td').text((index, square) => {
+    state.push(square);
+  });
+
+  gameData = { state: state };
+
+  if (currentGame) {
+    $.ajax({
+      type: 'PATCH',
+      url: `/games/${currentGame}`,
+      data: gameData
+    });
   } else {
-    url = "/games"
-    method = "POST"
+    $.post('/games', gameData, function(game) {
+      currentGame = game.data.id;
+      $('#games').append(`<button id="gameid-${game.data.id}">${game.data.id}</button><br>`);
+      $("#gameid-" + game.data.id).on('click', () => reloadGame(game.data.id));
+    });
   }
-
-  $.ajax({
-    url: url,
-    method: method,
-    dataType: "json",
-    data: {
-      game: {
-        state: getMarks()
-      }
-    },
-    success: function(data) {
-      if(resetCurrentGame) {
-        currentGame = undefined;
-      } else {
-        currentGame = data.game.id;
-      }
-    }
-  })
 }
 
-$(function() {
-  attachListeners()
-})
+function showPreviousGames() {
+  $('#games').empty();
+  $.get('/games', (savedGames) => {
+    if (savedGames.data.length) {
+      savedGames.data.forEach(buttonizePreviousGame);
+    }
+  });
+}
 
+function buttonizePreviousGame(game) {
+  $('#games').append(`<button id="gameid-${game.id}">${game.id}</button><br>`);
+  $(`#gameid-${game.id}`).on('click', () => reloadGame(game.id));
+}
+
+function reloadGame(gameID) {
+  document.getElementById('message').innerHTML = '';
+
+  const xhr = new XMLHttpRequest;
+  xhr.overrideMimeType('application/json');
+  xhr.open('GET', `/games/${gameID}`, true);
+  xhr.onload = () => {
+    const data = JSON.parse(xhr.responseText).data;
+    const id = data.id;
+    const state = data.attributes.state;
+
+    let index = 0;
+    for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        document.querySelector(`[data-x="${x}"][data-y="${y}"]`).innerHTML = state[index];
+        index++;
+      }
+    }
+
+    turn = state.join('').length;
+    currentGame = id;
+
+    if (!checkWinner() && turn === 9) {
+      message('Tie game.');
+    }
+  };
+
+  xhr.send(null);
+}
