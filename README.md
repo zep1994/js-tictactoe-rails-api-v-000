@@ -16,6 +16,17 @@ You are welcome to use jQuery, pure JavaScript, or a combination of the two, but
 ### Exploring the DOM
 The only view our application requires lives in `app/views/home/index.html`. Before you dive into writing JavaScript, start the Rails server and familiarize yourself with the DOM that you'll be working with. Take special note of the way in which the squares of the game board are identified with `data-x` and `data-y` attributes.
 
+### Buttons!
+
+#### `button#save`
+Clicking this button should save the current game state. If the current game already exists in the database, saving it should update that previously-saved game. If the current game has not yet been persisted to the database, saving it should do so. As a brief example, if we start with a blank board that has not been saved and click `button#save`, the current game should be persisted to our database. If we then click `button#save` a second time, the persisted game should be updated (though, since we have yet to make any moves, the board will still be blank in the updated game state).
+
+#### `button#previous`
+Clicking this button should grab all of the persisted games from the database and create a button for each that, when clicked, returns that saved game's state to our tic-tac-toe board. All of the buttons should be added to the `div#games` element in the DOM.
+
+#### `button#clear`
+Clicking this button should clear the game board and start _a completely new game_. If we click `button#save`, then `button#clear`, and then `button#save` again, _two_ games should have been persisted to the database.
+
 ## Conjunction junction, what's your function?
 For the actual TTT functionality, the test suite is pretty opinionated. We've given you a lot of the structure, and the tests force you down a pretty specific path as far as which functions you need to define and what they should do:
 - `player()`
