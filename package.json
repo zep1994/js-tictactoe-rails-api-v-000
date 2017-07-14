@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Second half of the final lab in Learn.co's Rails and JavaScript topic.",
   "main": "app/assets/javascripts/tictactoe.js",
+  "engines": {
+    "node": "8.x",
+    "npm": "5.x"
+  },
   "scripts": {
     "test": "mocha -R mocha-multi --reporter-options nyan=-,json=.results.json"
   },
