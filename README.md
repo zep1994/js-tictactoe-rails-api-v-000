@@ -47,6 +47,11 @@ For the actual TTT functionality, the test suite is pretty opinionated. We've gi
   + When a user clicks on a square on the game board, the event listener should invoke `doTurn()` and pass it the element that was clicked.
   + ***NOTE***: `attachListeners()` _must_ be invoked inside either a `$(document).ready()` (jQuery) or a `window.onload = () => {}` (vanilla JavaScript). Otherwise, a number of the tests will fail (not to mention that your game probably won't function in the browser).
 
+## Testing
+You can run the test suite in one of two ways:
+1. With Node (in your terminal) by running the `learn` or `npm test` command.
+2. In the browser by opening up `test/fixtures/index-test.html` in your browser, opening the JS console, and invoking the `mocha.run()` method. Note that, on subsequent tests, you should refresh the page each time before invoking `mocha.run()`.
+
 ## Bonus(es)
 1. Once all of the tests are passing and you have a functionally awesome / awesomely functional tic-tac-toe game with persistence, try refactoring your front-end to use ES6 `class`es and other OO design patterns. Think about the domain you're trying to model — how many classes do you need? What are the relationships between classes?
 2. Implement a [memoization](https://www.sitepoint.com/implementing-memoization-in-javascript/) scheme for minimizing the amount of database calls your application makes.
