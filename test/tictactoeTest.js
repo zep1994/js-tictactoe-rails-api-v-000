@@ -244,15 +244,15 @@ describe('tictactoe.js', () => {
     it('resets the board and the "turn" counter when a game is won', () => {
       sinon.useFakeXMLHttpRequest();
 
-      populateBoard(['X', 'O', 'X', 'X', 'O', 'X', 'O', '', 'O']);
-      //  X | O | X 
+      populateBoard(['X', 'X', 'O', 'X', 'O', 'X', '', 'O', 'O']);
+      //  X | X | O 
       // -----------
       //  X | O | X 
       // -----------
-      //  O |   | O 
+      //    | O | O 
 
       window.turn = 8;
-      window.doTurn(squares[7]);
+      window.doTurn(squares[6]);
 
       const board = Array.from(squares).map(s => s.innerHTML);
 
