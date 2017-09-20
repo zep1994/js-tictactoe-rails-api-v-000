@@ -87,7 +87,7 @@ describe('tictactoe.js', () => {
     });
   });
 
-  describe('message()', () => {
+  describe('setMessage()', () => {
     afterEach(() => {
       sandbox.restore();
       resetFixtures();
@@ -96,7 +96,7 @@ describe('tictactoe.js', () => {
     it('sets a provided string as the innerHTML of the div#message element', () => {
       const string = "Player X Won!";
 
-      window.message(string);
+      window.setMessage(string);
 
       expect(messageDiv.innerHTML).to.contain(string);
     });
@@ -158,8 +158,8 @@ describe('tictactoe.js', () => {
       expect(window.checkWinner()).to.equal(false);
     });
 
-    it('invokes the message() function with the argument "Player X Won!" when player X wins', () => {
-      const spy = sandbox.stub(window, 'message');
+    it('invokes the setMessage() function with the argument "Player X Won!" when player X wins', () => {
+      const spy = sandbox.stub(window, 'setMessage');
 
       populateBoard(['', '', '', 'X', 'X', 'X', 'O', 'O', '']);
       //    |   |   
@@ -173,8 +173,8 @@ describe('tictactoe.js', () => {
       expect(spy.firstCall.args[0]).to.equal('Player X Won!');
     });
 
-    it('invokes the message() function with the argument "Player O Won!" when player O wins', () => {
-      const spy = sandbox.stub(window, 'message');
+    it('invokes the setMessage() function with the argument "Player O Won!" when player O wins', () => {
+      const spy = sandbox.stub(window, 'setMessage');
 
       populateBoard(['O', '', '', 'X', 'O', 'X', 'X', '', 'O']);
       //  O |   |   
@@ -223,10 +223,10 @@ describe('tictactoe.js', () => {
       expect(spy.calledOnce).to.be.true;
     });
 
-    it('invokes the message() function with the argument "Tie game." when the game is tied', () => {
+    it('invokes the setMessage() function with the argument "Tie game." when the game is tied', () => {
       sinon.useFakeXMLHttpRequest();
 
-      const spy = sandbox.spy(window, 'message');
+      const spy = sandbox.spy(window, 'setMessage');
 
       populateBoard(['X', 'O', 'X', 'X', 'O', 'X', 'O', '', 'O']);
       //  X | O | X 
@@ -244,15 +244,15 @@ describe('tictactoe.js', () => {
     it('resets the board and the "turn" counter when a game is won', () => {
       sinon.useFakeXMLHttpRequest();
 
-      populateBoard(['X', 'O', 'X', 'X', 'O', 'X', 'O', '', 'O']);
-      //  X | O | X 
+      populateBoard(['X', 'X', 'O', 'X', 'O', 'X', '', 'O', 'O']);
+      //  X | X | O 
       // -----------
       //  X | O | X 
       // -----------
-      //  O |   | O 
+      //    | O | O 
 
       window.turn = 8;
-      window.doTurn(squares[7]);
+      window.doTurn(squares[6]);
 
       const board = Array.from(squares).map(s => s.innerHTML);
 
