@@ -18,7 +18,7 @@ function doTurn(square) {
     saveGame();
     resetBoard();
   } else if (turn === 9) {
-    message("Tie game.");
+    setMessage("Tie game.");
     saveGame();
     resetBoard();
   }
@@ -50,7 +50,7 @@ function checkWinner() {
 
   WINNING_COMBOS.some(function(combo) {
     if (board[combo[0]] !== "" && board[combo[0]] === board[combo[1]] && board[combo[1]] === board[combo[2]]) {
-      message(`Player ${board[combo[0]]} Won!`);
+      setMessage(`Player ${board[combo[0]]} Won!`);
       return winner = true;
     }
   });
@@ -63,7 +63,7 @@ function updateState(square) {
   $(square).text(token);
 }
 
-function message(string) {
+function setMessage(string) {
   $('#message').text(string);
 }
 
@@ -129,7 +129,7 @@ function reloadGame(gameID) {
     currentGame = id;
 
     if (!checkWinner() && turn === 9) {
-      message('Tie game.');
+      setMessage('Tie game.');
     }
   };
 
