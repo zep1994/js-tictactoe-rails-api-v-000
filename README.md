@@ -33,11 +33,11 @@ For the actual TTT functionality, the test suite is pretty opinionated. We've gi
   + Returns the token of the player whose turn it is, `'X'` when the `turn` variable is even and `'O'` when it is odd.
 - `updateState()`
   + Invokes `player()` and adds the returned string (`'X'` or `'O'`) to the clicked square on the game board.
-- `message()`
+- `setMessage()`
   + Accepts a string and adds it to the `div#message` element in the DOM.
 - `checkWinner()`
   + Returns `true` if the current board contains any winning combinations (three `X` or `O` tokens in a row, vertically, horizontally, or diagonally). Otherwise, returns `false`.
-  + If there is a winning combination on the board, `checkWinner()` should invoke `message()`, passing in the appropriate string based on who won: `'Player X Won!'` or `'Player O Won!'`
+  + If there is a winning combination on the board, `checkWinner()` should invoke `setMessage()`, passing in the appropriate string based on who won: `'Player X Won!'` or `'Player O Won!'`
 - `doTurn()`
   + Increments the `turn` variable by `1`.
   + Invokes the `updateState()` function, passing it the element that was clicked.
